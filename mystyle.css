@@ -1,0 +1,19 @@
+body {
+  background: #cdb38b;
+  background-image: none;
+  font-family: Papyrus, fantasy;
+  font-size: 24px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  line-height: 26.4px;
+}
+
+.well {
+  border: 1px solid black;
+  height: 75px;
+}
+
+.temp {
+  padding-top: 20px;
+}
