@@ -1,20 +1,33 @@
+var temperature, jurl;
+$(document).ready(function(){
+    
+   jurl = coord();
+    console.log(temperature, jurl);
+    var txt = $('.temp').text();
+    console.log(txt);
+   
+});
 // get longitude and latitude
+function coord(){
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
    
-var long= position.coords.longitude;
-        var lat = position.coords.latitude;
-      console.log(lat, long);
+var long = position.coords.longitude;
+var lat = position.coords.latitude;
+
         // when that is found, send to get city and state info
         geo(lat, long);
         //get weather data
-        var jurl = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=7ee19f0b66ef0860bc64994d445c9f81&units=imperial";
-        getWeather(jurl);
+        jurl = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=7ee19f0b66ef0860bc64994d445c9f81&units=imperial";
+    
+      
+      getWeather(jurl);
     });
   } else {
     // Browser doesn't support Geolocation
     alert("Browser does not support Geolocation");
   }
+}
       // use reverse geocoding to get city and state names.
 function geo(lat, long){
       var reverseURL = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+long;
@@ -29,9 +42,10 @@ function geo(lat, long){
     $('.loc').html(citstate);
         }
     });
-  console.log(reverseURL);
+
 }
    
+// pulls all the current weather data from openweathermap.org
 
 function getWeather(url) {
   $.ajax({
@@ -43,32 +57,38 @@ function getWeather(url) {
       $('.weat').append("<img src='" + icon_image + "'>" + data.weather[0].main);
       var weat = data.weather[0].main;
       weatherBackground(weat);
-     //$('.temp').append(data.main.temp, "F");
-     var temperature = data.main.temp;
-       tempToggle(temperature); $('.windSpeed').append(data.wind.speed);
+       temperature = data.main.temp;
+       //tempToggle(temperature); 
+        $('.temp').append(temperature, "F");
+        $('.windSpeed').append(data.wind.speed);
       var wspeed = data.wind.speed;
       $('.windDir').append(data.wind.deg);
       var wdir = data.wind.deg;
 
       var letter = wspeed + 'mph ' + wind(wdir);
       $('.letter').append(letter);
+      
 
     }
   });
+   
     function tempToggle(temp){
         var fTemp = temp;
         var cTemp = (temp - 32) / 1.8;
         var showTemp = temp;
-        $('.temp').html(showTemp, "F  <button type='button' class='btn btn-default' id='toggle'>F/C Toggle</button>");
+    //    $('.temp').append(showTemp, "F   <button type='button' class='btn btn-default' id='toggle'>F/C Toggle</button>");
+        console.log(showTemp, fTemp);
         $('#toggle').click(function(){
             if (showTemp === fTemp){
-                $('.temp').clear();
-                $('.temp').html(cTemp, "C  <button type='button' class='btn btn-default' id='toggle'>F/C Toggle</button>");
+               console.log('true');
+                $('.temp').empty();
+                $('.temp').append(cTemp, "C");
             }else{
-               $('.temp').clear();
-                $('.temp').html(fTemp, "F  <button type='button' class='btn btn-default' id='toggle'>F/C Toggle</button>"); 
+                console.log('false');
+               $('.temp').empty();
+                $('.temp').append(fTemp, "F"); 
             }
-        })
+        });
         
     }
   // pulls background images
@@ -100,7 +120,7 @@ function getWeather(url) {
   };
 
   function wind(wdir) {
-    console.log(wdir);
+
     if (wdir.between(348.75, 360)) {
       return "N";
     } else if (wdir.between(0.0, 11.25)) {
@@ -123,3 +143,4 @@ function getWeather(url) {
   }
 
 }
+//});

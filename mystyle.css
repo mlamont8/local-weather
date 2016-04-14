@@ -15,5 +15,16 @@ body {
 }
 
 .temp {
-  padding-top: 20px;
+  padding-top: 15px;
+   
+    float: left;
+    width: 50%;
+}
+
+.butt{
+   
+    float: right;
+    width: 50%;
+    padding-top: 10px;
+    
 }
