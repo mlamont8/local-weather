@@ -1,10 +1,13 @@
 var temperature, jurl;
 $(document).ready(function(){
     
-   jurl = coord();
+   coord();
     console.log(temperature, jurl);
-    var txt = $('.temp').text();
+    $('#toggle').click(function(){
+        var txt = $('.temp').html();
     console.log(txt);
+    });
+   
    
 });
 // get longitude and latitude
@@ -59,9 +62,12 @@ function getWeather(url) {
       weatherBackground(weat);
        temperature = data.main.temp;
        //tempToggle(temperature); 
-        $('.temp').append(temperature, "F");
-        $('.windSpeed').append(data.wind.speed);
-      var wspeed = data.wind.speed;
+        var tem = temperature.toString();
+        console.log(tem);
+        $('.temp').append((Math.round(tem)), " \u00B0 F");
+        //$('.windSpeed').append(data.wind.speed);
+      var wspeed = Math.round(data.wind.speed);
+        $('.windSpeed').append((Math.round(wspeed)));
       $('.windDir').append(data.wind.deg);
       var wdir = data.wind.deg;
 
@@ -78,7 +84,7 @@ function getWeather(url) {
         var showTemp = temp;
     //    $('.temp').append(showTemp, "F   <button type='button' class='btn btn-default' id='toggle'>F/C Toggle</button>");
         console.log(showTemp, fTemp);
-        $('#toggle').click(function(){
+       
             if (showTemp === fTemp){
                console.log('true');
                 $('.temp').empty();
@@ -88,9 +94,9 @@ function getWeather(url) {
                $('.temp').empty();
                 $('.temp').append(fTemp, "F"); 
             }
-        });
+        }
         
-    }
+    
   // pulls background images
   function weatherBackground(weat) {
 
