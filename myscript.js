@@ -2,13 +2,38 @@ var temperature, jurl;
 $(document).ready(function(){
     
    coord();
-    console.log(temperature, jurl);
-    $('#toggle').click(function(){
+     $('#toggle').click(function(){
+        //pull value
         var txt = $('.temp').html();
-    console.log(txt);
+                //strip non alphanumeric values
+        var deg = txt.replace(/[^A-Z]/g, '');
+         console.log(deg);
+        // strip non numeric values
+        txt = txt.replace(/\D/g,'');
+
+       tempToggle(txt, deg);
+  
     });
    
-   
+function tempToggle(temp, degrees){
+        var newTemp;
+        var fTemp = temp;
+        var cTemp = (temp - 32) / 1.8;
+        var showTemp = temp;
+          console.log(showTemp, fTemp);
+       
+            if (degrees == "F"){
+               console.log('to C');
+                newTemp = (temp - 32) / 1.8;
+                $('.temp').empty();
+                $('.temp').append((Math.round(newTemp)), " \u00B0 C");
+            }else{
+                console.log('to F');
+                newTemp = (temp * 1.8) + 32;
+               $('.temp').empty();
+                $('.temp').append((Math.round(newTemp)), " \u00B0 F"); 
+            }
+        }   
 });
 // get longitude and latitude
 function coord(){
@@ -78,23 +103,7 @@ function getWeather(url) {
     }
   });
    
-    function tempToggle(temp){
-        var fTemp = temp;
-        var cTemp = (temp - 32) / 1.8;
-        var showTemp = temp;
-    //    $('.temp').append(showTemp, "F   <button type='button' class='btn btn-default' id='toggle'>F/C Toggle</button>");
-        console.log(showTemp, fTemp);
-       
-            if (showTemp === fTemp){
-               console.log('true');
-                $('.temp').empty();
-                $('.temp').append(cTemp, "C");
-            }else{
-                console.log('false');
-               $('.temp').empty();
-                $('.temp').append(fTemp, "F"); 
-            }
-        }
+    
         
     
   // pulls background images
@@ -102,17 +111,17 @@ function getWeather(url) {
 
       switch (weat.toUpperCase()) {
         case 'CLEAR':
-          $('body').css('background-image', 'url(http://i.imgur.com/5pSZvhW.jpg)');
+          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/5pSZvhW.jpg)');
           break;
         case 'CLOUDS':
-          $('body').css('background-image', 'url(http://i.imgur.com/ht7HI2F.jpg)');
+          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/ht7HI2F.jpg)');
           break;
         case 'RAIN':
-          $('body').css('background-image', 'url(http://i.imgur.com/zYqi2oN.jpg)');
+          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/zYqi2oN.jpg)');
           break;
 
         case 'SNOW':
-          $('body').css('background-image', 'url(http://i.imgur.com/HCPIQ02.jpg)');
+          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/HCPIQ02.jpg)');
           break;
         default:
           $('body').css('background-image', 'none');
