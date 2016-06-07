@@ -7,28 +7,28 @@ $(document).ready(function(){
         var txt = $('.temp').html();
                 //strip non alphanumeric values
         var deg = txt.replace(/[^A-Z]/g, '');
-         console.log(deg);
+        
         // strip non numeric values
         txt = txt.replace(/\D/g,'');
 
        tempToggle(txt, deg);
   
     });
-   
+   // Converts between Fahrenheit and Celsius
 function tempToggle(temp, degrees){
         var newTemp;
         var fTemp = temp;
         var cTemp = (temp - 32) / 1.8;
         var showTemp = temp;
-          console.log(showTemp, fTemp);
+  
        
             if (degrees == "F"){
-               console.log('to C');
+  
                 newTemp = (temp - 32) / 1.8;
                 $('.temp').empty();
                 $('.temp').append((Math.round(newTemp)), " \u00B0 C");
             }else{
-                console.log('to F');
+
                 newTemp = (temp * 1.8) + 32;
                $('.temp').empty();
                 $('.temp').append((Math.round(newTemp)), " \u00B0 F"); 
@@ -43,7 +43,7 @@ if (navigator.geolocation) {
 var long = position.coords.longitude;
 var lat = position.coords.latitude;
 
-        // when that is found, send to get city and state info
+        // send to get city and state info
         geo(lat, long);
         //get weather data
         jurl = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=7ee19f0b66ef0860bc64994d445c9f81&units=imperial";
@@ -88,7 +88,7 @@ function getWeather(url) {
        temperature = data.main.temp;
        //tempToggle(temperature); 
         var tem = temperature.toString();
-        console.log(tem);
+
         $('.temp').append((Math.round(tem)), " \u00B0 F");
         //$('.windSpeed').append(data.wind.speed);
       var wspeed = Math.round(data.wind.speed);
@@ -158,4 +158,3 @@ function getWeather(url) {
   }
 
 }
-//});
