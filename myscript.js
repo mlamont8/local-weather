@@ -114,7 +114,7 @@ function getWeather(url) {
           $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/5pSZvhW.jpg)');
           break;
         case 'CLOUDS':
-          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/ht7HI2F.jpg)');
+          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/cloudy.jpg)');
           break;
         case 'RAIN':
           $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/zYqi2oN.jpg)');
@@ -123,8 +123,13 @@ function getWeather(url) {
         case 'SNOW':
           $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/HCPIQ02.jpg)');
           break;
+              
+        case 'MIST':
+          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/mist.jpg)');
+          break;
+              
         default:
-          $('body').css('background-image', 'none');
+          $('body').css('background-image', 'url(http://dishofsoul.com/extfiles/5pSZvhW.jpg)');
 
       }
     }

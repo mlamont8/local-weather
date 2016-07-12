@@ -1,5 +1,6 @@
 body {
-  background: #cdb38b;
+
+background: #000000;
   background-image: none;
   font-family: Papyrus, fantasy;
   font-size: 24px;
@@ -7,11 +8,28 @@ body {
   font-variant: normal;
   font-weight: 500;
   line-height: 26.4px;
+    color: antiquewhite;
+      text-shadow: 2px 2px #000000;
+}
+h1{
+    font-size: 70px;
+}
+.top {
+    padding-bottom: 50px;
 }
 
-.well {
-  border: 1px solid black;
+.row {
+    padding-top: 50px;
+}
+
+
+
+.result{
+background: none;
+  border: none;
   height: 75px;
+
+    
 }
 
 .temp {
