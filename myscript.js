@@ -1,7 +1,10 @@
-var temperature, jurl;
+
 $(document).ready(function(){
     
-   coord();
+  // find the users location
+    whereAreU();
+    
+    // when toggle button is used
      $('#toggle').click(function(){
         //pull value
         var txt = $('.temp').html();
@@ -14,7 +17,56 @@ $(document).ready(function(){
        tempToggle(txt, deg);
   
     });
-   // Converts between Fahrenheit and Celsius
+});
+
+// Uses api to find users location
+function whereAreU(){
+       $.ajax({
+      url: "http://ip-api.com/json",
+      dataType: 'json',
+      success: function(data){
+          var ipInfo = {'lat': data.lat, 'lon': data.lon};
+          
+//Gives city/state to DOM
+$('.loc').html(data.city + ", "+ data.region);
+// Calls next function to pull weather info          
+ weath(ipInfo);
+       },
+     });
+ } 
+
+//Uses openweathermap api to pull weather info using longitude and latitude held in ipInfo variable
+
+function weath(ipInfo){
+
+    $.ajax({
+    url: "http://api.openweathermap.org/data/2.5/weather?lat=" + ipInfo.lat + "&lon=" + ipInfo.lon + "&APPID=7ee19f0b66ef0860bc64994d445c9f81&units=imperial",
+    type: 'POST',
+    dataType: 'jsonp',
+    success: function(data) {
+        // Icon
+      var icon_image = "http://openweathermap.org/img/w/" + data.weather[0].icon + '.png';
+      $('.weat').append("<img src='" + icon_image + "'>" + data.weather[0].main);
+        // Weather Type
+      var weat = data.weather[0].main;
+     // Send to function to select correct background
+      weatherBackground(weat);
+        //Temperature
+        var tem = (data.main.temp).toString();
+
+        $('.temp').append((Math.round(tem)), " \u00B0 F");
+        
+      var wspeed = Math.round(data.wind.speed);
+      var wdir = data.wind.deg;
+      var letter = 'WindSpeed:  ' + wspeed + 'mph ';
+      $('.letter').append(letter + wind(wdir));
+      
+
+    }
+    });
+    }
+
+// function to toggle between F and C
 function tempToggle(temp, degrees){
         var newTemp;
         var fTemp = temp;
@@ -33,79 +85,8 @@ function tempToggle(temp, degrees){
                $('.temp').empty();
                 $('.temp').append((Math.round(newTemp)), " \u00B0 F"); 
             }
-        }   
-});
-// get longitude and latitude
-function coord(){
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-   
-var long = position.coords.longitude;
-var lat = position.coords.latitude;
+        } 
 
-        // send to get city and state info
-        geo(lat, long);
-        //get weather data
-        jurl = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=7ee19f0b66ef0860bc64994d445c9f81&units=imperial";
-    
-      
-      getWeather(jurl);
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    alert("Browser does not support Geolocation");
-  }
-}
-      // use reverse geocoding to get city and state names.
-function geo(lat, long){
-      var reverseURL = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+long;
-    $.ajax({
-        url: reverseURL,
-        type: 'POST',
-        dataType: 'json',
-        success: function (data){
-            var city = data.results[0].address_components[2].long_name;
-            var state = data.results[0].address_components[5].short_name;
-            var citstate = city + ", " + state;
-    $('.loc').html(citstate);
-        }
-    });
-
-}
-   
-// pulls all the current weather data from openweathermap.org
-
-function getWeather(url) {
-  $.ajax({
-    url: url,
-    type: 'POST',
-    dataType: 'jsonp',
-    success: function(data) {
-      var icon_image = "http://openweathermap.org/img/w/" + data.weather[0].icon + '.png';
-      $('.weat').append("<img src='" + icon_image + "'>" + data.weather[0].main);
-      var weat = data.weather[0].main;
-      weatherBackground(weat);
-       temperature = data.main.temp;
-       //tempToggle(temperature); 
-        var tem = temperature.toString();
-
-        $('.temp').append((Math.round(tem)), " \u00B0 F");
-        //$('.windSpeed').append(data.wind.speed);
-      var wspeed = Math.round(data.wind.speed);
-        $('.windSpeed').append((Math.round(wspeed)));
-      $('.windDir').append(data.wind.deg);
-      var wdir = data.wind.deg;
-
-      var letter = wspeed + 'mph ' + wind(wdir);
-      $('.letter').append(letter);
-      
-
-    }
-  });
-   
-    
-        
-    
   // pulls background images
   function weatherBackground(weat) {
 
@@ -133,13 +114,13 @@ function getWeather(url) {
 
       }
     }
-    // Changes wind direction from degrees to S, W, E or N
 
-  Number.prototype.between = function(first, last) {
+  function wind(wdir) {
+      //create a new number method called 'between' to handle ranges
+        Number.prototype.between = function(first, last) {
     return (first < last ? this >= first && this <= last : this >= last && this <= first);
   };
 
-  function wind(wdir) {
 
     if (wdir.between(348.75, 360)) {
       return "N";
@@ -161,5 +142,3 @@ function getWeather(url) {
       return "S";
     }
   }
-
-}
